@@ -14,4 +14,4 @@ def deeptype(depth):
   end;
 
 def deeptype: deeptype(-1);
-def types: types(1);
+def types: deeptype(1);
