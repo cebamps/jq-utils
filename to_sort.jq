@@ -41,3 +41,20 @@ def take_until(pred): [take_until(.[]; pred)];
 ###
 
 def unpad(pred): drop_while(pred) | rdrop_while(pred);
+
+###
+
+# takes a structure representing directed edges as an object of string
+# arrays {"from": ["to1", "to2"]}, returns the corresponding structure with all
+# edges flipped {"to1": ["from"], "to2": ["from"]}
+#
+# prototype; building up the object might be more performant with reduce
+def edge_flip:
+  [ to_entries[]
+    | (.value = .value[])
+    | {key: .value, value: .key}
+  ]
+  | group_by(.key)
+  | map({key: .[0].key, value: map(.value)})
+  | from_entries
+;
