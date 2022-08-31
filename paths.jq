@@ -5,9 +5,12 @@
 # Shorthand:
 #    picking(.. | objects | select(has("foo")).foo)
 def pick(paths):
+  def haspath($path):
+    getpath($path[:-1]) | has($path[-1]);
+
   . as $o | reduce paths as $p
     ( null
-    ; setpath($p; $o | getpath($p))
+    ; if $o | haspath($p) then setpath($p; $o | getpath($p)) else . end
     );
 
 def picking(pathexprs): pick(path(pathexprs));
