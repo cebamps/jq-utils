@@ -26,3 +26,21 @@ def drop(n; s):
 
 # Drops the first element of the stream.
 def tail(s): drop(1; s);
+
+def _jq_truthy: not | not;
+
+# TODO: document, test, maybe generalize
+def ins_between(s; f; x; pred):
+  # box values so we know null is the sentinel
+  foreach pairs_boundary(s | [.]) as $pair (
+    # state values: false: "do not insert yet"; true: "insert now"; null: "done"
+    false;
+    if . == false then
+      $pair | pred | _jq_truthy
+    else null end;
+    # skip virtual beginning entry
+    ($pair[0] | values | .[0] | f),
+    # (null | x) ensures no information leaks into x
+    if . == true then (null | x) else empty end
+  )
+;

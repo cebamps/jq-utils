@@ -2,8 +2,10 @@ import "streams" as s;
 
 def _jq_truthy: not | not;
 
-# Inserts a key-value pair in the input object at the first location satisfied
+# Inserts an ordered set of key-value pairs in the input object at the first location satisfied
 # by a given predicate.
+#
+# The ordered set is provided as an object.
 #
 # The predicate receives a pair of entries as a two-item array. The key is
 # inserted between those entries.
@@ -14,49 +16,46 @@ def _jq_truthy: not | not;
 #
 # In particular, when the input is empty, the predicate is only tested once,
 # against the input [null,null].
-def ins_between($k; $v; pred):
-  [
-    foreach s::pairs_boundary(to_entries[]) as $pair (
-      # state values: false: "do not insert yet"; true: "insert now"; null: "done"
-      false;
-      if . == false then
-        $pair | pred | _jq_truthy
-      else null end;
-      # skip virtual beginning entry and old entry for $k
-      ($pair[0] | values | select(.key != $k)),
-      if . == true then {key:$k, value:$v} else empty end
-    )
-  ] | from_entries;
+def ins_between($kv; pred):
+  [s::ins_between(
+    to_entries[]; 
+    select(.key | in($kv) | not);
+    $kv | to_entries[];
+    map(.[0]) | pred
+  )] | from_entries;
 
-# Inserts a key-value pair in an object before the first {key,value} (or null)
+# Same as ins_between/2, but with a single key and value passed individually.
+def ins_between($k; $v; pred):
+  ins_between({($k): $v}; pred);
+
+# Inserts key-value pairs in an object before the first {key,value} (or null)
 # satisfying the predicate. The null entry is a virtual entry after the last
 # entry.
-def ins_before_p($k; $v; pred):
-  ins_between($k; $v; .[1] | pred);
+def ins_before($kv; pred):
+  ins_between($kv; .[1] | pred);
 
-# Inserts a key-value pair in an object after the first {key,value} (or null)
+# Inserts key-value pairs in an object after the first {key,value} (or null)
 # satisfying the predicate. The null entry is a virtual entry before the first
 # entry.
-def ins_after_p($k; $v; pred):
-  ins_between($k; $v; .[0] | pred);
+def ins_after($kv; pred):
+  ins_between($kv; .[0] | pred);
 
-# Inserts a key-value pair in an object before the given key (or null). The
-# null entry is a virtual entry after the last entry.
-def ins_before($k; $v; $ref):
-  ins_before_p($k; $v; .key == $ref);
+# Inserts key-value pairs in an object before the given key (or null). The null
+# entry is a virtual entry after the last entry.
+def ins_before_key($kv; $ref):
+  ins_before($kv; .key == $ref);
 
-# Inserts a key-value pair in an object after the given key (or null). The null
+# Inserts key-value pairs in an object after the given key (or null). The null
 # entry is a virtual entry before the first entry.
-def ins_after($k; $v; $ref):
-  ins_after_p($k; $v; .key == $ref);
+def ins_after_key($kv; $ref):
+  ins_after($kv; .key == $ref);
 
 # Moves the key passed first before the key passed second (or null to move it
 # to last position).
-def ins_before($k; $ref):
-  ins_before_p($k; .[$k]; .key == $ref);
+def mv_before_key($k; $ref):
+  ins_before_key({($k): .[$k]}; $ref);
 
 # Moves the key passed first after the key passed second (or null to move it to
 # first position).
-def ins_after($k; $ref):
-  ins_after_p($k; .[$k]; .key == $ref);
-
+def mv_after_key($k; $ref):
+  ins_after_key({($k): .[$k]}; $ref);
