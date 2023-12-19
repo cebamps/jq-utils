@@ -15,19 +15,18 @@ def _unpairs_boundary: .[1:] | map(.[0]);
 # In particular, when the input is empty, the predicate is only tested once,
 # against the input [null,null].
 def ins_between($k; $v; pred):
-  reduce s::pairs_boundary(to_entries[]) as $pair (
-    # accumulator, and entry to insert (cleared once inserted)
-    {acc: [], ins: {key:$k, value:$v}};
-    ((.ins != null) and ($pair | pred)) as $matched
-    | (.acc = .acc + [
-        # skip virtual beginning entry and old entry for $k
-        ($pair[0] | values | select(.key != $k)),
-        (if $matched then .ins else empty end)
-      ])
-    | (.ins |= if $matched then null else . end)
-  )
-  | .acc
-  | from_entries;
+  [
+    foreach s::pairs_boundary(to_entries[]) as $pair (
+      # state values: false: "do not insert yet"; true: "insert now"; null: "done"
+      false;
+      if . == false then
+        $pair | pred
+      else null end;
+      # skip virtual beginning entry and old entry for $k
+      ($pair[0] | values | select(.key != $k)),
+      if . == true then {key:$k, value:$v} else empty end
+    )
+  ] | from_entries;
 
 # Inserts a key-value pair in an object before the first {key,value} (or null)
 # satisfying the predicate. The null entry is a virtual entry after the last
