@@ -61,3 +61,45 @@ include "objects"; ins_between("new"; 9; if .[0] == null then false else 0 end) 
 {"a":1,"b":2}
 {"a":1,"new":9,"b":2}
 ["a","new","b"]
+
+### elementary tests for the shorthands, just to be sure they are coded right
+
+include "objects"; ins_before_p("new"; 9; .value == 2) | .,keys_unsorted
+{"a":1,"b":2,"c":3}
+{"a":1,"new":9,"b":2,"c":3}
+["a","new","b","c"]
+
+include "objects"; ins_after_p("new"; 9; .value == 2) | .,keys_unsorted
+{"a":1,"b":2,"c":3}
+{"a":1,"b":2,"new":9,"c":3}
+["a","b","new","c"]
+
+include "objects"; ins_before("new"; 9; "b") | .,keys_unsorted
+{"a":1,"b":2,"c":3}
+{"a":1,"new":9,"b":2,"c":3}
+["a","new","b","c"]
+
+include "objects"; ins_after("new"; 9; "b") | .,keys_unsorted
+{"a":1,"b":2,"c":3}
+{"a":1,"b":2,"new":9,"c":3}
+["a","b","new","c"]
+
+include "objects"; ins_before("r"; "b") | .,keys_unsorted
+{"a":1,"b":2,"c":3,"r":9}
+{"a":1,"r":9,"b":2,"c":3}
+["a","r","b","c"]
+
+include "objects"; ins_before("r"; "b") | .,keys_unsorted
+{"r":9,"a":1,"b":2,"c":3}
+{"a":1,"r":9,"b":2,"c":3}
+["a","r","b","c"]
+
+include "objects"; ins_after("r"; "b") | .,keys_unsorted
+{"a":1,"b":2,"c":3,"r":9}
+{"a":1,"b":2,"r":9,"c":3}
+["a","b","r","c"]
+
+include "objects"; ins_after("r"; "b") | .,keys_unsorted
+{"r":9,"a":1,"b":2,"c":3}
+{"a":1,"b":2,"r":9,"c":3}
+["a","b","r","c"]
