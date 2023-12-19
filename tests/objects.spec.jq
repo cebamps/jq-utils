@@ -47,3 +47,17 @@ include "objects"; ins_between("new"; 9; false)
 include "objects"; ins_between("a"; 9; false)
 {"a":1}
 {}
+
+# predicate uses jq's notion of truthiness (null is falsy)
+# The predicate skips first position using falsy null.
+include "objects"; ins_between("new"; 9; if .[0] == null then null else true end) | .,keys_unsorted
+{"a":1,"b":2}
+{"a":1,"new":9,"b":2}
+["a","new","b"]
+
+# predicate uses jq's notion of truthiness (0 is truthy)
+# The predicate accepts second position using truthy 0.
+include "objects"; ins_between("new"; 9; if .[0] == null then false else 0 end) | .,keys_unsorted
+{"a":1,"b":2}
+{"a":1,"new":9,"b":2}
+["a","new","b"]

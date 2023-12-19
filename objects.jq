@@ -1,6 +1,6 @@
 import "streams" as s;
 
-def _unpairs_boundary: .[1:] | map(.[0]);
+def _jq_truthy: not | not;
 
 # Inserts a key-value pair in the input object at the first location satisfied
 # by a given predicate.
@@ -20,7 +20,7 @@ def ins_between($k; $v; pred):
       # state values: false: "do not insert yet"; true: "insert now"; null: "done"
       false;
       if . == false then
-        $pair | pred
+        $pair | pred | _jq_truthy
       else null end;
       # skip virtual beginning entry and old entry for $k
       ($pair[0] | values | select(.key != $k)),
