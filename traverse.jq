@@ -4,7 +4,7 @@ def isiterable: isempty(scalars);
 # transforming [state,value] pairs.
 #
 # (recursive implementation)
-def walk_recur(update):
+def walkstate_recur(update):
   if .[1] | isiterable then
     .[0] as $s0
     | reduce (.[1] | to_entries[]) as $x (
@@ -12,7 +12,7 @@ def walk_recur(update):
       # re-built object/array so far
       .[1] as $acc
       # apply stateful update with current state
-      | .[1] = $x.value | walk_recur(update)
+      | .[1] = $x.value | walkstate_recur(update)
       # keeping new state, place new value in accumulator
       | .[1] |= (
           . as $new
@@ -24,7 +24,7 @@ def walk_recur(update):
 ;
 
 def traverse_recur(update):
-  walk_recur(if .[1] | isiterable then . else update end)
+  walkstate_recur(if .[1] | isiterable then . else update end)
 ;
 
 # Stateful depth-first traversal of a structure's scalars, with an update
@@ -48,6 +48,12 @@ def traverse_stream(update):
 ;
 
 # versions with initial state given as parameter
-def walk_recur($s0; update): [$s0,.] | walk_recur(update);
+def walkstate_recur($s0; update): [$s0,.] | walkstate_recur(update);
 def traverse_recur($s0; update): [$s0,.] | traverse_recur(update);
 def traverse_stream($s0; update): [$s0,.] | traverse_stream(update);
+
+# names with no reference to implementation detail
+def walkstate(s0; update): walkstate_recur(s0; update);
+def walkstate(update): walkstate_recur(update);
+def traverse(s0; update): traverse_stream(s0; update);
+def traverse(update): traverse_stream(update);
