@@ -1,9 +1,11 @@
+def isiterable: isempty(scalars);
+
 # Stateful depth-first walk of a structure's scalars, with an update function
 # transforming [state,value] pairs.
 #
 # (recursive implementation)
 def walk_recur(update):
-  if .[1] | type | (. == "object" or . == "array") then
+  if .[1] | isiterable then
     .[0] as $s0
     | reduce (.[1] | to_entries[]) as $x (
       [$s0];
@@ -22,7 +24,7 @@ def walk_recur(update):
 ;
 
 def traverse_recur(update):
-  walk_recur(if .[1] | isempty(scalars) then . else update end)
+  walk_recur(if .[1] | isiterable then . else update end)
 ;
 
 # Stateful depth-first traversal of a structure's scalars, with an update
