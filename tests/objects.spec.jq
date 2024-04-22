@@ -1,3 +1,17 @@
+# flatten
+include "objects"; flat(join(" > "))
+{"foo": {"bar": 42}, "qux": 100, "baz": {}}
+{"foo > bar": 42, "qux": 100}
+
+include "objects"; flat
+{"foo": {"bar": 42}, "qux": 100}
+{"foo.bar": 42, "qux": 100}
+
+# flatten with arrays
+include "objects"; flat
+{"foo": [42, 100], "bar": []}
+{"foo.0": 42, "foo.1": 100}
+
 # insert between virtual entries
 include "objects"; ins_between("new"; 9; . == [null,null])
 {}

@@ -2,6 +2,16 @@ import "streams" as s;
 
 def _jq_truthy: not | not;
 
+def flat(f):
+  . as $in
+  | reduce paths(isempty(iterables)) as $p (
+      {};
+      setpath([$p | f]; $in | getpath($p))
+  )
+;
+
+def flat: flat(join("."));
+
 # Inserts a key-value pair in the input object at the first location satisfied
 # by a given predicate.
 #
