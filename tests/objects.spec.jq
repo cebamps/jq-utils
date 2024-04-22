@@ -12,6 +12,28 @@ include "objects"; flat
 {"foo": [42, 100], "bar": []}
 {"foo.0": 42, "foo.1": 100}
 
+# unflatten
+include "objects"; unflat(split(" > "))
+{"foo > bar": 42, "qux": 100}
+{"foo": {"bar": 42}, "qux": 100}
+
+include "objects"; unflat
+{"foo.bar": 42, "qux": 100}
+{"foo": {"bar": 42}, "qux": 100}
+
+include "objects"; unflat
+{"foo.0": 42, "foo.1": 100}
+{"foo": {"0": 42, "1": 100}}
+
+# unflatten with arrays
+include "objects"; unflat_arr
+{"foo.0": 42, "foo.1": 100}
+{"foo": [42, 100]}
+
+include "objects"; unflat_arr
+{"foo.1": 100}
+{"foo": [null, 100]}
+
 # insert between virtual entries
 include "objects"; ins_between("new"; 9; . == [null,null])
 {}

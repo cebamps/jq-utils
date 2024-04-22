@@ -12,6 +12,17 @@ def flat(f):
 
 def flat: flat(join("."));
 
+def unflat(f):
+  reduce to_entries[] as $kv (
+    {};
+    setpath($kv.key | f; $kv.value)
+  )
+;
+
+def unflat: unflat(split("."));
+  
+def unflat_arr: unflat(split(".") | map(tonumber? // .));
+
 # Inserts a key-value pair in the input object at the first location satisfied
 # by a given predicate.
 #
