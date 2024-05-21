@@ -12,6 +12,10 @@ include "objects"; flat
 {"foo": [42, 100], "bar": []}
 {"foo.0": 42, "foo.1": 100}
 
+include "objects"; flat
+[42]
+{"0": 42}
+
 # flatten with nulls
 include "objects"; flat
 {"foo": [null], "bar": {"qux": null}}
@@ -38,6 +42,10 @@ include "objects"; unflat_arr
 include "objects"; unflat_arr
 {"foo.1": 100}
 {"foo": [null, 100]}
+
+include "objects"; unflat_arr
+{"1": 42}
+[null, 42]
 
 # flatten with custom stopping criterion
 include "objects"; flat_on(type == "object" and has("_"))

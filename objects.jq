@@ -17,7 +17,7 @@ def flat_on(stop): flat(join("."); stop);
 
 def unflat(f):
   reduce to_entries[] as $kv (
-    {};
+    null;
     setpath($kv.key | f; $kv.value)
   )
 ;
