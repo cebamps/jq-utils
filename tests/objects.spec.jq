@@ -30,22 +30,23 @@ include "objects"; unflat
 {"foo.bar": 42, "qux": 100}
 {"foo": {"bar": 42}, "qux": 100}
 
-include "objects"; unflat
-{"foo.0": 42, "foo.1": 100}
-{"foo": {"0": 42, "1": 100}}
-
 # unflatten with arrays
-include "objects"; unflat_arr
+include "objects"; unflat
 {"foo.0": 42, "foo.1": 100}
 {"foo": [42, 100]}
 
-include "objects"; unflat_arr
+include "objects"; unflat
 {"foo.1": 100}
 {"foo": [null, 100]}
 
-include "objects"; unflat_arr
+include "objects"; unflat
 {"1": 42}
 [null, 42]
+
+# without arrays
+include "objects"; unflat(split("."))
+{"foo.0": 42, "foo.1": 100}
+{"foo": {"0": 42, "1": 100}}
 
 # flatten with custom stopping criterion
 include "objects"; flat_on(type == "object" and has("_"))

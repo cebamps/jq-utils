@@ -21,10 +21,8 @@ def unflat(f):
     setpath($kv.key | f; $kv.value)
   )
 ;
-
-def unflat: unflat(split("."));
   
-def unflat_arr: unflat(split(".") | map(tonumber? // .));
+def unflat: unflat(split(".") | map(tonumber? // .));
 
 # Inserts a key-value pair in the input object at the first location satisfied
 # by a given predicate.
