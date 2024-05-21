@@ -2,15 +2,18 @@ import "streams" as s;
 
 def _jq_truthy: not | not;
 
-def flat(f):
+# traversal based on builtin "paths" implementation https://github.com/jqlang/jq/blob/jq-1.7.1/src/builtin.jq#L52
+def flat(f; stop):
   . as $in
-  | reduce paths(isempty(iterables)) as $p (
+  | reduce (path(recurse(if stop then empty else .[]? end) | select(stop or isempty(iterables))) | select(length > 0)) as $p (
       {};
       setpath([$p | f]; $in | getpath($p))
   )
 ;
 
+def flat(f): flat(f; false);
 def flat: flat(join("."));
+def flat_on(stop): flat(join("."); stop);
 
 def unflat(f):
   reduce to_entries[] as $kv (

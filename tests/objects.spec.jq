@@ -34,6 +34,11 @@ include "objects"; unflat_arr
 {"foo.1": 100}
 {"foo": [null, 100]}
 
+# flatten with custom stopping criterion
+include "objects"; flat_on(type == "object" and has("_"))
+{"foo": {"_": 42}, "qux": {"baz": 100}}
+{"foo": {"_": 42}, "qux.baz": 100}
+
 # insert between virtual entries
 include "objects"; ins_between("new"; 9; . == [null,null])
 {}
