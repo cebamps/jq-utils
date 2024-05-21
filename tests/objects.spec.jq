@@ -12,6 +12,11 @@ include "objects"; flat
 {"foo": [42, 100], "bar": []}
 {"foo.0": 42, "foo.1": 100}
 
+# flatten with nulls
+include "objects"; flat
+{"foo": [null], "bar": {"qux": null}}
+{"foo.0": null, "bar.qux": null}
+
 # unflatten
 include "objects"; unflat(split(" > "))
 {"foo > bar": 42, "qux": 100}
