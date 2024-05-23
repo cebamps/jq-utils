@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for spec in lib/*/*.spec.jq; do
+  jq --run-tests $spec
+done
