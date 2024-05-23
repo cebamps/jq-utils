@@ -1,4 +1,4 @@
-import "streams" as s;
+import "lib/streams" as s;
 
 # index, with predicate
 def index_p(pred):

@@ -1,8 +1,8 @@
-import "streams" as s;
+import "lib/streams" as s;
 
 def _jq_truthy: not | not;
 
-# traversal based on builtin "paths" implementation https://github.com/jqlang/jq/blob/jq-1.7.1/src/builtin.jq#L52
+# traversal based on builtin "paths" implementation https://github.com/jqlang/lib/blob/jq-1.7.1/src/builtin.jq#L52
 def flat(f; stop):
   . as $in
   | reduce (path(recurse(if stop then empty else .[]? end) | select(stop or isempty(iterables))) | select(length > 0)) as $p (

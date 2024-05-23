@@ -1,15 +1,15 @@
-import "arrays" as arrays;
-import "dates" as dates;
-import "deeptype" as deeptype;
-import "i18n" as i18n;
-import "lutify" as lutify;
-import "objects" as objects;
-import "paths" as paths;
-import "sets" as sets;
-import "streams" as streams;
-import "to_sort" as to_sort;
-import "translation" as translation;
-import "traverse" as traverse;
+import "lib/arrays" as arrays;
+import "lib/dates" as dates;
+import "lib/deeptype" as deeptype;
+import "lib/i18n" as i18n;
+import "lib/lutify" as lutify;
+import "lib/objects" as objects;
+import "lib/paths" as paths;
+import "lib/sets" as sets;
+import "lib/streams" as streams;
+import "lib/to_sort" as to_sort;
+import "lib/translation" as translation;
+import "lib/traverse" as traverse;
 
 def index_p(pred): arrays::index_p(pred);
 def pairs: arrays::pairs;
