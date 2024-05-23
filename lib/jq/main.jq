@@ -5,6 +5,7 @@ import "lib/i18n" as i18n;
 import "lib/lutify" as lutify;
 import "lib/objects" as objects;
 import "lib/paths" as paths;
+import "lib/pkg" as pkg;
 import "lib/sets" as sets;
 import "lib/streams" as streams;
 import "lib/to_sort" as to_sort;
@@ -48,6 +49,9 @@ def ins_after($k; $ref): objects::ins_after($k; $ref);
 
 def pick(paths): paths::pick(paths);
 def picking(pathexprs): paths::picking(pathexprs);
+
+def signatures: pkg::signatures;
+def barrel_file(sig_expr; mod_expr; import_path): pkg::barrel_file(sig_expr; mod_expr; import_path);
 
 def intersection($other; f): sets::intersection($other; f);
 def intersection(other): sets::intersection(other);
