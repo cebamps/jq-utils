@@ -4,7 +4,7 @@
 #
 # Example:
 #
-# TZ=UTC jq -n 'include "lib/dates"; now | [., date_add(10; "months")] | map(todate)'
+# TZ=UTC jq -n 'include "cb/dates"; now | [., date_add(10; "months")] | map(todate)'
 # [
 #   "2021-08-31T09:42:38Z",
 #   "2022-07-01T09:42:38Z"

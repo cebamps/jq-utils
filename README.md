@@ -1,8 +1,8 @@
 ## Installing
 
-Clone, and symlink the lib directory under the preferred name in `~/.jq/`, for example, `~/.jq/c`.
+Clone, and create a symlink the `cb` directory at `~/.jq/cb`.
 
-Then, `import "c/arrays"`, or `import "c"` to import everything through the barrel file in `lib/jq/main.jq`.
+Then, `import "cb/arrays"`, or `import "cb"` to import everything through the barrel file in `cb/jq/main.jq`.
 
 ## Developing
 

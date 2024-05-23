@@ -54,7 +54,7 @@
 #     | (.[2] = $file2)
 #     | delutify
 
-import "lib/traverse" as t;
+import "cb/traverse" as t;
 
 ########
 # unicify

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-jq -Rrn 'import "lib/pkg" as pkg {search:"."}; pkg::_barrel_file' lib/*/*.jq > lib/jq/main.jq
+jq -Rrn 'import "cb/pkg" as pkg {search:"."}; pkg::_barrel_file' cb/*/*.jq > cb/jq/main.jq
